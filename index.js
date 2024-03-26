@@ -15,6 +15,10 @@ const puppeteer = require("puppeteer");
     "div.s-main-slot.s-result-list.s-search-results.sg-row > .s-result-item"
   );
 
+  let i = 0;
+
+  let items = [];
+
   for (const producthandle of productsHandles) {
     let title = "Null";
     let price = "Null";
@@ -41,8 +45,13 @@ const puppeteer = require("puppeteer");
       );
     } catch (error) {}
 
-    console.log(title, price, img);
+    if (title != "Null") {
+      items.push({ title, price, img });
+    }
   }
+
+  console.log(items);
+  console.log(items.length);
 
   // await browser.close();
 })();
