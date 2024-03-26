@@ -15,26 +15,43 @@ const puppeteer = require("puppeteer");
     "div.s-main-slot.s-result-list.s-search-results.sg-row > .s-result-item"
   );
 
+  let i = 0;
+
+  let items = [];
+
   for (const producthandle of productsHandles) {
+    let title = "Null";
+    let price = "Null";
+    let img = "Null";
+
     try {
-      const title = await page.evaluate(
+      title = await page.evaluate(
         (el) => el.querySelector("h2 > a > span").textContent,
         producthandle
       );
+    } catch (error) {}
 
-      const price = await page.evaluate(
+    try {
+      price = await page.evaluate(
         (el) => el.querySelector(".a-price > .a-offscreen").textContent,
         producthandle
       );
+    } catch (error) {}
 
-      const img = await page.evaluate(
+    try {
+      img = await page.evaluate(
         (el) => el.querySelector(".s-image").getAttribute("src"),
         producthandle
       );
-
-      console.log(img);
     } catch (error) {}
+
+    if (title != "Null") {
+      items.push({ title, price, img });
+    }
   }
+
+  console.log(items);
+  console.log(items.length);
 
   // await browser.close();
 })();
